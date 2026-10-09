@@ -10,3 +10,5 @@ models/
 # Python
 __pycache__/
 *.pyc
+# CatBoost
+catboost_info/
