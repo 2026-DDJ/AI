@@ -12,3 +12,9 @@ __pycache__/
 *.pyc
 # CatBoost
 catboost_info/
+
+# 이전 다년도 패널 실험 데이터
+data/processed/KHP_2022_2024_panel.csv
+data/processed/KHP_2022_2024_panel_features.csv
+data/processed/KHP_2022_2024_panel_v2.csv
+data/processed/feature_screening_2023.csv
