@@ -18,3 +18,10 @@ data/processed/KHP_2022_2024_panel.csv
 data/processed/KHP_2022_2024_panel_features.csv
 data/processed/KHP_2022_2024_panel_v2.csv
 data/processed/feature_screening_2023.csv
+
+# 현재 가공 데이터
+data/processed/KHP_2024_week5_v3.csv
+
+# 실험 보관 파일 및 로그
+archive/
+results/
