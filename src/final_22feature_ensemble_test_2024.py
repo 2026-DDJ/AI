@@ -16,6 +16,8 @@ CSV = "data/processed/KHP_2024_week5_v3.csv"
 TARGET = "annual_medical_cost"
 SEED = 42
 
+MS_CSV = "data/processed/KHP_2024_ms_features.csv"
+
 # ============================================================
 # LOAD + FINAL 15 FEATURES
 # ============================================================
@@ -104,6 +106,43 @@ df["dent_share"] = (
     .clip(0, 1)
 )
 
+# ============================================================
+# MS EVENT-LEVEL FEATURES
+# ============================================================
+
+ms = pd.read_csv(MS_CSV)
+ms.columns = ms.columns.str.lower()
+
+MS_FEATURES = [
+    "pidwon",
+    "ms_total_days",
+    "ms_in_treatment_nunique",
+    "ms_facility_nunique",
+    "ms_mtype_1_count",
+    "ms_mtype_3_count",
+    "ms_in_reason_2_count",
+    "ms_in_trt_1_count",
+]
+
+ms = ms[MS_FEATURES].copy()
+
+for c in MS_FEATURES[1:]:
+    ms[c] = pd.to_numeric(
+        ms[c],
+        errors="coerce"
+    ).fillna(0)
+
+df = df.merge(
+    ms,
+    on="pidwon",
+    how="left",
+    validate="one_to_one"
+)
+
+for c in MS_FEATURES[1:]:
+    df[c] = df[c].fillna(0)
+    
+    
 FEATURES = [
     "ingun",
     "income",
@@ -120,6 +159,15 @@ FEATURES = [
     "activity_limitation",
     "anxiety_depression",
     "eco9",
+    
+    # MS event-level features
+    "ms_total_days",
+    "ms_in_treatment_nunique",
+    "ms_facility_nunique",
+    "ms_mtype_1_count",
+    "ms_mtype_3_count",
+    "ms_in_reason_2_count",
+    "ms_in_trt_1_count",
 ]
 
 CATEGORICAL = {
