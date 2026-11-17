@@ -1,10 +1,18 @@
+import json
 import numpy as np
+from pathlib import Path
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Optional
 
 from src.predict import predict_medical_cost
+
+
+STATS_PATH = Path(__file__).resolve().parent.parent / "models" / "comparison_stats.json"
+
+with open(STATS_PATH, encoding="utf-8") as f:
+    comparison_stats = json.load(f)
 
 
 app = FastAPI(
@@ -151,13 +159,38 @@ def predict(data: MedicalCostInput):
     # -------------------------
     result = predict_medical_cost(input_data)
 
+    # -------------------------
+    # 유사 집단 의료비 비교
+    # -------------------------
+    income = data.income
+    region = data.region1
+
+    if income < 2400:
+        income_group = 1
+    elif income < 4500:
+        income_group = 2
+    elif income < 7500:
+        income_group = 3
+    else:
+        income_group = 4
+
+    overall = comparison_stats["overall"]
+    income_stats = comparison_stats["income"].get(str(income_group))
+    region_income_stats = comparison_stats["region_income"].get(
+        f"{region}_{income_group}"
+    )
+
     return {
         "success": True,
         "predictedAnnualMedicalCost": round(
             result["predicted_annual_medical_cost"]
         ),
         "highCostProbability": round(
-            result["high_cost_probability"],
-            4
-        )
+            result["high_cost_probability"], 4
+        ),
+        "comparison": {
+            "overall": overall,
+            "sameIncomeGroup": income_stats,
+            "sameRegionAndIncomeGroup": region_income_stats
+        }
     }
