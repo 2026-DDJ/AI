@@ -20,11 +20,24 @@ def summarize(group):
 stats = {
     "overall": summarize(df["annual_medical_cost"]),
     "income": {},
+    "outpatient": {},
     "region_income": {}
 }
 
 for income, group in df.groupby("income_group", observed=True):
     stats["income"][str(income)] = summarize(group["annual_medical_cost"])
+
+
+df["outpatient_group"] = pd.cut(
+    df["ougun"],
+    bins=[-1, 5, 10, 20, 50, float("inf")],
+    labels=[1, 2, 3, 4, 5]
+)
+
+for group_id, group in df.groupby("outpatient_group", observed=True):
+    stats["outpatient"][str(group_id)] = summarize(
+        group["annual_medical_cost"]
+    )
 
 for (region, income), group in df.groupby(
     ["region1", "income_group"], observed=True

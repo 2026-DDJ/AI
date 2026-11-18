@@ -163,7 +163,7 @@ def predict(data: MedicalCostInput):
     # 유사 집단 의료비 비교
     # -------------------------
     income = data.income
-    region = data.region1
+    ougun = data.ougun
 
     if income < 2400:
         income_group = 1
@@ -176,8 +176,19 @@ def predict(data: MedicalCostInput):
 
     overall = comparison_stats["overall"]
     income_stats = comparison_stats["income"].get(str(income_group))
-    region_income_stats = comparison_stats["region_income"].get(
-        f"{region}_{income_group}"
+    if ougun <= 5:
+        outpatient_group = 1
+    elif ougun <= 10:
+        outpatient_group = 2
+    elif ougun <= 20:
+        outpatient_group = 3
+    elif ougun <= 50:
+        outpatient_group = 4
+    else:
+        outpatient_group = 5
+
+    outpatient_stats = comparison_stats["outpatient"].get(
+        str(outpatient_group)
     )
 
     return {
@@ -191,6 +202,6 @@ def predict(data: MedicalCostInput):
         "comparison": {
             "overall": overall,
             "sameIncomeGroup": income_stats,
-            "sameRegionAndIncomeGroup": region_income_stats
+            "sameOutpatientGroup": outpatient_stats
         }
     }
