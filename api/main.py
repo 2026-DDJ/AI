@@ -196,9 +196,6 @@ def predict(data: MedicalCostInput):
         "predictedAnnualMedicalCost": round(
             result["predicted_annual_medical_cost"]
         ),
-        "highCostProbability": round(
-            result["high_cost_probability"], 4
-        ),
         "comparison": {
             "overall": overall,
             "sameIncomeGroup": income_stats,
