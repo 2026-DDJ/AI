@@ -1,193 +1,316 @@
-MEDICAST AI
+<div align="center">
 
-개인의 건강정보와 의료이용 정보를 기반으로 연간 의료비를 예측하는 MEDICAST의 AI 모듈입니다.
+<img src="src/intro.gif" width="100%" alt="MEDICAST Intro" />
 
-한국의료패널(KHP) 2024년 연간 데이터를 활용하며, 일반 의료비와 고액 의료비의 분포 차이를 고려한 Two-stage XGBoost 모델을 사용합니다.
+<br/>
+<br>
 
-주요 기능
+---
+<br>
+<br>
 
-* 개인 연간 의료비 예측
-* 고액 의료비 발생 확률 예측
-* 건강·의료이용 정보를 활용한 개인별 예측
-* 사용자 입력 조건 변경에 따른 의료비 재예측
-* FastAPI 기반 백엔드 연동 API 제공
+</div>
 
-데이터
+<div align="center">
 
-한국의료패널(KHP)
+<img src="https://raw.githubusercontent.com/2026-DDJ/FE/main/src/assets/medicast-logo.svg" width="320" alt="MEDICAST Logo" />
 
-2024년 연간 데이터를 모델 학습에 활용했습니다.
 
-연간 의료비는 응급, 입원, 외래 의료비를 합산하여 구성했으며, 의료비를 직접 구성하는 금액 변수는 모델 입력 Feature에서 제외했습니다.
+### Predict Your Health. Prepare Your Future.
 
-원본 한국의료패널 데이터 및 가공 데이터는 저장소에 포함하지 않습니다.
+**데이터로 예측하는 나의 의료비, 더 나은 건강을 위한 시작.**
 
-사용자 입력
+MEDICAST는 개인의 건강 및 생활 데이터를 기반으로  
+향후 1년간의 의료비를 예측하고 건강한 선택을 돕는 AI 기반 웹서비스입니다.
 
-서비스에서는 다음 15개 항목을 입력받습니다.
+<br/>
 
-1. 가구원 수
-2. 소득
-3. 건강보험 유형
-4. 거주 지역
-5. 주관적 건강상태
-6. 키
-7. 몸무게
-8. 운동 여부
-9. 최근 1년 외래 이용 횟수
-10. 최근 1년 치과 이용 횟수
-11. 실손보험 가입 여부
-12. 최근 1년 입원 여부
-13. 활동 제한 정도
-14. 불안·우울 정도
-15. 직업군
+<img src="https://img.shields.io/badge/React-19-20232A?style=flat-square&logo=react&logoColor=61DAFB"/>
+<img src="https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white"/>
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black"/>
+<img src="https://img.shields.io/badge/Styled--Components-DB7093?style=flat-square&logo=styledcomponents&logoColor=white"/>
+<img src="https://img.shields.io/badge/Three.js-111111?style=flat-square&logo=threedotjs&logoColor=white"/>
+<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>
+<img src="https://img.shields.io/badge/Render-000000?style=flat-square&logo=render&logoColor=white"/>
+<img src="https://img.shields.io/badge/XGBoost-337AB7?style=flat-square"/>
 
-키와 몸무게를 이용해 BMI를 자동 계산하며, 외래 및 치과 이용 정보를 이용해 치과 이용 비율을 파생변수로 생성합니다.
 
-소득은 학습데이터의 분포를 기준으로 4개 구간으로 구성하고 각 구간의 중앙값을 모델 입력값으로 사용합니다.
+<br/><br/>
 
-모델 Feature
+[Frontend](https://github.com/2026-DDJ/FE) · [Backend](https://github.com/2026-DDJ/BE) · [AI](https://github.com/2026-DDJ/AI)
 
-최종 모델은 총 28개 Feature를 사용합니다.
+</div>
 
-기본 및 사용자 관련 Feature
+<br/>
 
-* 가구원 수
-* 소득
-* 건강보험 유형
-* 지역
-* 주관적 건강상태
-* BMI
-* 운동 여부
-* 외래 이용 횟수
-* 치과 외래 이용 횟수
-* 치과 이용 비율
-* 실손보험 가입 여부
-* 입원 여부
-* 활동 제한
-* 불안·우울
-* 직업군
+<br/>
 
-의료이용 상세 Feature
+## 01. About MEDICAST
 
-한국의료패널 의료이용 상세 데이터에서 생성한 13개 Feature를 추가로 사용합니다.
+### 의료비를 예측하고, 건강의 미래를 설계하다.
 
-웹 프로토타입에서는 사용자가 직접 입력하기 어려운 의료이용 상세 Feature에 학습데이터 기반 대표값을 적용합니다.
+우리는 자신의 건강 상태를 알고 있어도  
+앞으로 얼마나 많은 의료비가 발생할지 쉽게 예상하기 어렵습니다.
 
-모델 구조
+**MEDICAST**는 이러한 불확실성을 줄이기 위해 시작되었습니다.
 
-의료비 데이터의 긴 꼬리 분포와 고액 의료비 예측 문제를 고려하여 Two-stage XGBoost 구조를 사용합니다.
+개인의 생활 습관, 건강 상태, 의료 이용 기록을 분석하여  
+예상 의료비를 제공하고, 다양한 조건에서의 변화를 비교할 수 있도록 돕습니다.
 
-1. 고액 의료비 발생 확률 분류
-2. 일반 의료비군 회귀 예측
-3. 고액 의료비군 회귀 예측
-4. 분류 확률을 이용한 Soft Gating
-5. 최종 연간 의료비 산출
+<br/>
 
-고액 의료비 기준은 연간 의료비 상위 15%로 설정했습니다.
+<div align="center">
 
-모델 성능
+| PREDICT | COMPARE | SIMULATE |
+|:---:|:---:|:---:|
+| 🩺 | 📊 | 🌱 |
+| **의료비 예측** | **집단별 의료비 비교** | **건강 변화 시뮬레이션** |
+| 개인 데이터 기반<br/>연간 의료비 예측 | 비슷한 조건의 집단과<br/>예측 결과 비교 | 생활 습관 변화에 따른<br/>예상 의료비 비교 |
 
-28개 Feature를 사용한 반복 검증 결과:
+</div>
 
-* 평균 R²: 0.5841
-* 평균 MAE: 690,318원
-* 평균 RMSE: 1,565,846원
-* 평균 AUC: 0.9341
+<br/>
 
-위 성능은 실제 28개 Feature를 사용한 모델 검증 결과입니다.
+<br/>
 
-웹 프로토타입에서는 의료이용 상세 Feature 일부에 대표값을 적용하므로 실제 서비스 입력 환경과 모델 검증 환경에는 차이가 있습니다.
+## 02. Key Features
 
-AI API
+### 01 — AI Medical Cost Prediction
 
-FastAPI를 이용해 예측 API를 제공합니다.
+**나의 데이터를 기반으로 미래 의료비를 예측합니다.**
 
-Endpoint
+사용자는 4단계 설문을 통해 자신의 생활 환경과 건강 정보를 입력합니다.
 
-POST /predict
+| STEP | CATEGORY | DETAILS |
+|:---:|---|---|
+| 01 | 생활·경제 정보 | 가구원 수, 소득, 지역, 직업 |
+| 02 | 건강 상태 및 생활 습관 | BMI 관련 신체 정보, 운동, 주관적 건강 상태 |
+| 03 | 의료 이용 기록 | 외래 및 치과 이용 횟수, 입원 여부 |
+| 04 | 보험 정보 | 건강보험 유형, 실손보험 가입 여부 |
 
-요청 예시
+입력된 데이터는 백엔드 API를 통해 AI 예측 시스템에 전달되며, 향후 1년간의 예상 의료비가 제공됩니다.
 
-{
-  "ingun": 2,
-  "income": 5880,
-  "health_ins": 1,
-  "region1": 11,
-  "self_rated_health": 3,
-  "height": 165,
-  "weight": 55,
-  "exercise": 1,
-  "ougun": 5,
-  "ougun_dent": 1,
-  "indemnity_insurance": 1,
-  "hospitalized_year": 0,
-  "activity_limitation": 1,
-  "anxiety_depression": 1,
-  "eco9": 31
-}
+<br/>
 
-응답 예시
+### 02 — Medical Cost Comparison
 
-{
-  "success": true,
-  "predictedAnnualMedicalCost": 1275157,
-  "highCostProbability": 0.0276
-}
+**나와 비슷한 사람들은 얼마나 지출할까요?**
 
-실행 방법
+AI가 예측한 개인 의료비를 다양한 비교 집단의 평균과 함께 시각화합니다.
 
-패키지 설치
+- 나의 예상 연간 의료비
+- 동일 소득 구간 평균 의료비
+- 동일 외래 이용 횟수 구간 평균 의료비
+- 전체 평균 의료비
 
-pip install -r requirements.txt
+막대그래프를 통해 자신의 예상 의료비를 직관적으로 비교할 수 있습니다.
 
-API 실행
+<br/>
 
-uvicorn api.main:app --reload
+### 03 — Health Simulation
 
-API 문서:
+**생활 습관이 달라진다면 예상 의료비는 어떻게 변할까요?**
 
-http://127.0.0.1:8000/docs
+사용자가 건강 관련 조건을 직접 변경하여 예상 의료비의 변화를 확인할 수 있습니다.
 
-프로젝트 구조
+| VARIABLE | DESCRIPTION |
+|---|---|
+| BMI | 체질량지수 조절 |
+| Exercise | 규칙적인 운동 여부 변경 |
+| Prediction | 변경된 조건으로 의료비 재예측 |
+| Comparison | 변경 전후 금액 및 증감률 비교 |
 
-AI/
-├── api/
-│   └── main.py
-├── data/
-│   ├── processed/
-│   └── raw/
-├── models/
-│   ├── classifier.pkl
-│   ├── high_model.pkl
-│   ├── low_model.pkl
-│   └── metadata.pkl
+단순한 의료비 예측을 넘어, 다양한 건강 조건에 따른 예측 결과를 탐색할 수 있습니다.
+
+> 본 서비스의 예측 결과는 통계적 추정이며, 실제 의료비나 생활 습관 변화의 인과적 효과를 보장하지 않습니다.
+
+<br/>
+
+### 04 — Interactive Experience
+
+**복잡한 의료 데이터를 직관적인 경험으로.**
+
+- Three.js 기반 3D 인체 모델
+- 단계별 설문 인터페이스
+- 데이터 시각화 및 결과 비교
+- PC 및 모바일 반응형 UI
+- 예측 로딩 및 오류 상태 처리
+
+<br/>
+
+<br/>
+
+## 03. Tech Stack
+
+<div align="center">
+
+| Category | Technologies |
+|:---:|---|
+| **Core** | React 19, JavaScript |
+| **Build** | Vite 8 |
+| **Styling** | Styled Components 6, CSS |
+| **Routing** | React Router DOM 7 |
+| **3D Graphics** | Three.js |
+| **Networking** | Fetch API |
+| **Code Quality** | Oxlint |
+| **Testing** | Node.js Test Runner |
+
+</div>
+
+<br/>
+
+<br/>
+
+## 04. System Architecture
+
+```mermaid
+flowchart TD
+    A["USER"] --> B["MEDICAST Frontend"]
+    B --> C["4-Step Assessment"]
+    C --> D["Backend API"]
+    D --> E["AI Prediction Service"]
+    E --> D
+    D --> F["Prediction Result"]
+    F --> B
+    B --> G["Medical Cost Comparison"]
+    B --> H["Health Simulation"]
+    H --> D
+
+    style A fill:#E9F8F2,stroke:#29AE89,color:#163B31
+    style B fill:#29AE89,stroke:#29AE89,color:#FFFFFF
+    style D fill:#E9F8F2,stroke:#29AE89,color:#163B31
+    style E fill:#E9F8F2,stroke:#29AE89,color:#163B31
+```
+
+프론트엔드는 사용자 입력과 결과 시각화를 담당하며, 백엔드를 통해 의료비 예측 및 시뮬레이션 기능을 호출합니다.
+
+<br/>
+
+<br/>
+
+## 05. Project Structure
+
+```text
+MEDICAST-FE
+│
+├── docs/                   # 연동 및 모델 입력 문서
+├── scripts/                # 보조 스크립트
 ├── src/
-│   ├── predict.py
-│   └── train_final_model.py
-├── .gitignore
-├── requirements.txt
-└── README.md
+│   ├── api/                # API 요청 및 예측 관련 로직
+│   ├── assets/             # 이미지, 폰트, 3D 모델
+│   ├── components/         # 재사용 UI 컴포넌트
+│   ├── data/               # 데이터 리소스
+│   ├── pages/
+│   │   ├── analysis/       # 의료비 설문 및 예측 결과
+│   │   ├── simulation/     # 건강 조건 시뮬레이션
+│   │   ├── Main.jsx        # 메인 페이지
+│   │   ├── Intro.jsx       # 인트로
+│   │   ├── Login.jsx       # 로그인 화면
+│   │   └── Signup.jsx      # 회원가입 화면
+│   ├── styles/             # 페이지별 스타일
+│   ├── utils/              # 검증 및 변환 유틸리티
+│   ├── App.jsx             # 라우팅
+│   └── main.jsx            # 애플리케이션 진입점
+│
+├── tests/                  # 단위 테스트
+├── package.json
+└── vite.config.js
+```
 
-모델 파일
+<br/>
 
-* classifier.pkl : 고액 의료비 분류 모델
-* low_model.pkl : 일반 의료비군 회귀 모델
-* high_model.pkl : 고액 의료비군 회귀 모델
-* metadata.pkl : Feature 목록 및 모델 설정 정보
+<br/>
 
-서비스 연동 구조
+## 06. Getting Started
 
-Frontend
-   ↓
-Spring Boot Backend
-   ↓
-FastAPI AI Server
-   ↓
-Two-stage XGBoost Model
-   ↓
-연간 의료비 + 고액 의료비 확률
-   ↓
-Backend
-   ↓
-Frontend
+### Prerequisites
+
+- Node.js 및 npm
+- 실행 가능한 백엔드 API 서버
+
+### Installation
+
+```bash
+git clone https://github.com/2026-DDJ/FE.git
+cd FE
+npm install
+```
+
+### Environment Variables
+
+프로젝트 루트에 `.env` 파일을 생성합니다.
+
+```env
+VITE_API_BASE_URL=https://medicast-be.onrender.com
+```
+
+환경변수를 설정하지 않으면 코드에 지정된 기본 API 주소를 사용합니다.
+
+### Development
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview
+
+```bash
+npm run preview
+```
+
+### Lint & Test
+
+```bash
+npm run lint
+node --test tests/*.test.js
+```
+
+<br/>
+
+---
+
+<br/>
+
+## 07. API Integration
+
+MEDICAST 프론트엔드는 다음과 같은 예측 API를 사용합니다.
+
+| Method | Endpoint | Description |
+|:---:|---|---|
+| POST | `/predictions` | 설문 기반 의료비 예측 요청 |
+| GET | `/predictions/{predictionId}` | 예측 상태 및 결과 조회 |
+| POST | `/predictions/{predictionId}/simulations` | 조건 변경 시뮬레이션 |
+
+예측 처리 과정에서는 비동기 상태를 관리하며, 완료되지 않은 작업은 폴링하여 결과를 확인합니다.
+
+추가적인 연동 내용은 [Backend Integration](./docs/backend-integration.md) 문서에서 확인할 수 있습니다.
+
+<br/>
+
+<br/>
+
+## 08. Team DDJ
+
+<div align="center">
+
+**Different Data, Just for You.**
+
+| NAME | ROLE | RESPONSIBILITY |
+|:---:|:---:|---|
+| **박지수** | AI · Planning | 의료비 예측 모델 개발 및 기획 |
+| **박영서** | Frontend · Design | UI/UX 디자인 및 프론트엔드 개발 |
+| **최서아** | Backend · Data | 데이터 전처리 및 백엔드 API 개발 |
+
+<br/>
+
+**2026 · MEDICAST**
+
+*Making healthcare more predictable.*
+
+</div>
